@@ -26,3 +26,8 @@ test_that("synapse_file_to_tbl", {
     expect_true(tibble::is_tibble(res1))
     expect_true(tibble::is_tibble(res2))
 })
+
+test_that("create_entity_tbl", {
+    res1 <- create_entity_tbl(FOLDER1_ID)
+    expect_true(tibble::is_tibble(res1))
+})

@@ -13,3 +13,13 @@ synapse_file_to_tbl <- function(id, delim = "\t", ...){
         magrittr::use_series(path) %>%
         readr::read_delim(delim, ...)
 }
+
+create_entity_tbl <- function(id, ...){
+    tbl <- id %>% 
+        synapser::synGetChildren() %>% 
+        synapser::as.list() %>% 
+        purrr::map(as.data.frame) %>% 
+        purrr::map(dplyr::as_tibble) %>% 
+        purrr::map(dplyr::mutate_if, is.factor, as.character) %>% 
+        dplyr::bind_rows()
+}
