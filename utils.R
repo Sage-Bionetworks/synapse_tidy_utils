@@ -6,3 +6,10 @@ query_synapse_table <- function(query, row_data = F, ...){
         {.$asDataFrame()} %>% 
         dplyr::as_tibble()
 }
+
+synapse_file_to_tbl <- function(id, delim = "\t", ...){
+    tbl <- id %>% 
+        synapser::synGet() %>%
+        magrittr::use_series(path) %>%
+        readr::read_delim(delim, ...)
+}
