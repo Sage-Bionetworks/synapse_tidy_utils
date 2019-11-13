@@ -23,3 +23,21 @@ create_entity_tbl <- function(id, ...){
         purrr::map(dplyr::mutate_if, is.factor, as.character) %>% 
         dplyr::bind_rows()
 }
+
+add_annotations_to_tbl <- function(tbl, id_col = "id", ...){
+    tbl %>% 
+        dplyr::rename(id = id_col) %>% 
+        dplyr::mutate(annotations = purrr::map(
+            id, 
+            create_annotation_tbl, 
+            ...
+        )) %>% 
+        tidyr::unnest("annotations")
+}
+
+create_annotation_tbl <- function(id, ...){
+    id %>% 
+        synapser::synGetAnnotations(...) %>% 
+        purrr::flatten() %>% 
+        dplyr::as_tibble()
+}
